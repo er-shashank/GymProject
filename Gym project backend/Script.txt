@@ -1,0 +1,37 @@
+[Unit]
+Description= GymTrackerBackend Application
+After=syslog.target
+
+
+[Service]
+User=ubuntu
+ExecStart=/home/ubuntu/project/GymTrackerBackend.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+systemctl enable GymTrackerBackend
+systemctl start GymTrackerBackend
+systemctl stop GymTrackerBackend
+systemctl restart GymTrackerBackend
+systemctl status GymTrackerBackend
+
+
+systemctl enable  nginx
+systemctl start   nginx
+systemctl stop    nginx
+systemctl restart nginx
+
+
+
+server {
+    listen 0.0.0.0:80;
+    server_name localhost;
+    root /home/ubuntu/project/frontend;
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
