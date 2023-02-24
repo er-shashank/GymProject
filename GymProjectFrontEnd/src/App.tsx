@@ -16,7 +16,7 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 function App() {
 
   const [currentDay, setCurrentday] = useState<GymPlan>()
-  const [dayNo, setDayNo] = useState(0);
+  const [dayNo, setDayNo] = useState(1);
   const [isLoading, setLoading] = useState(true);
   const [httpError, setHttpError] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
@@ -49,7 +49,8 @@ function App() {
     });
     
     
-    setDayNo((dayNo + 1) % 3)
+    setDayNo(((dayNo + 1) % 3)+1)  
+    
 
     //pushing data to record
     let currenDate = new Date();
@@ -139,14 +140,14 @@ function App() {
   return (
     <div>
 
-      <Route path='/' exact>
-      <SignIn></SignIn>
-      </Route>
       {/* <Route path='/' exact>
+      <SignIn></SignIn>
+      </Route> */}
+      <Route path='/' exact>
       <WorkOutTable currentDay={currentDay} changeDay={changeDay} personalRecord={personalRecord} setPersonalRecord={setPersonalRecord}></WorkOutTable>
       <NavLink to ='/history'> <Button variant="contained" >{showHistory ? 'Close History' : 'Show History'} </Button>
       </NavLink>
-      </Route> */}
+      </Route>
       
 
 

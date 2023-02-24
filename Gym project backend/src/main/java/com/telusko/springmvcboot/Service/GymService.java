@@ -61,12 +61,19 @@ public class GymService {
     public int nextWorkout() {
         String lastWorkOutstring = workHist.findLastExerciseDone();
 
-		Integer lastWorkOut = Integer.parseInt((lastWorkOutstring == null) ? "2" : lastWorkOutstring);
-		int totalWorkOutAvailable = repo.totalWorkOutAvailable();
+        if(lastWorkOutstring == null) return 1;
 
-		return (lastWorkOut + 1) % totalWorkOutAvailable;
+
+
+		Integer lastWorkOut = Integer.parseInt(lastWorkOutstring);
+		int totalWorkOutAvailable = repo.totalWorkOutAvailable();
+        int nextworkOut=((lastWorkOut + 1) % (totalWorkOutAvailable+1));
+
+
+		return (nextworkOut==0)? 1: nextworkOut;
     }
 
 
+    
 
 }
