@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -104,6 +105,16 @@ public class GymController {
 	@PutMapping("updatepr")
 	public void updatePRRecord(@RequestBody gymplan planWithPR) {
 		service.updatePR(planWithPR);
+	}
+	@PostMapping("addnewplan")
+	public void addNewplan(@RequestBody gymplan plan) {
+		service.addNewplan(plan);
+	}
+
+	@DeleteMapping("removenewplans")
+	public void removeNewplans(){
+		repo.deleteOldRecord();
+		repo.resetIdSequence();
 	}
 
 }

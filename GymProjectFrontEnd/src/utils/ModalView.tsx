@@ -2,6 +2,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, FormControlLabel, Checkbox, TextField } from '@mui/material';
+import GymPlan from '../models/GymPlan';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -17,7 +19,8 @@ const style = {
   pb: 3,
 };
 
-function ChildModal() {
+
+export const NestedModal = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -26,54 +29,111 @@ function ChildModal() {
     setOpen(false);
   };
 
-  return (
-    <React.Fragment>
-      <Button onClick={handleOpen}>Open Child Modal</Button>
-      <Modal
-        hideBackdrop
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box sx={{ ...style, width: 200 }}>
-          <h2 id="child-modal-title">Text in a child modal</h2>
-          <p id="child-modal-description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-          </p>
-          <Button onClick={handleClose}>Close Child Modal</Button>
-        </Box>
-      </Modal>
-    </React.Fragment>
-  );
-}
+ 
 
-export const NestedModal=()=> {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const [newPlan, setNewPlan] = React.useState<GymPlan>();
+  const loadedGymPlan= new GymPlan();  
+      
+
+  function addNewPlan(){
+    fetch("http://localhost:8080/addnewplan",
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+
+        "body_part": newPlan?.body_part,
+        "exercise1": newPlan?.exercise1+'$0',
+        "exercise2": newPlan?.exercise2+'$0',
+        "exercise3": newPlan?.exercise3+'$0',
+        "exercise4": newPlan?.exercise4+'$0',
+        "exercise5": newPlan?.exercise5+'$0'
+      })
+    }).then((result) => {
+      console.log("data pushed  "+result);
+    }).catch((err) => {
+      console.error(err);
+    });
+
+    // this line redirect to home page
+    window.location.href = "http://localhost:3000/";
+
+  }
+
+  //to check how many fields has been filled in the form
+  function countCheck(){
+    if(newPlan?.body_part &&
+      newPlan?.exercise1  &&
+      newPlan?.exercise2  &&
+      newPlan?.exercise3  &&
+      newPlan?.exercise4  &&
+      newPlan?.exercise5  
+      )
+    return false;
+    
+    return true;
+  }
+
+
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <Button onClick={handleOpen}>Add New Plan</Button>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 400 }}>
-          <h2 id="parent-modal-title">Is New PR?</h2>
-          <p id="parent-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-          <ChildModal />
+        {/* here i can adjust width and height of modal box */}
+        <Box sx={{ ...style, width: 800 }}>
+          <h2 id="parent-modal-title">Fill the below Form</h2>
+
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Body Target</TableCell>
+                  <TableCell><TextField id="outlined-basic1" size="small"  value={newPlan?.body_part} onChange={(e)=>{  setNewPlan(prevPlan=>{ return {...prevPlan,body_part:e.target.value}}); console.log('body part  '+newPlan?.body_part)}} variant="outlined"  /></TableCell>
+                        
+                </TableRow>
+                <TableRow>
+                
+                  <TableCell>Exercise1</TableCell>
+                  <TableCell><TextField id="outlined-basic1" size="small" value={newPlan?.exercise1} onChange={(e)=>{setNewPlan(prevPlan=>{ return {...prevPlan,exercise1:e.target.value}});}} variant="outlined" /></TableCell>
+                </TableRow>
+                <TableRow>
+                
+                  <TableCell>Exercise2</TableCell>
+                  <TableCell><TextField id="outlined-basic1" size="small" value={newPlan?.exercise2} onChange={(e)=>{setNewPlan(prevPlan=>{ return {...prevPlan,exercise2:e.target.value}});}} variant="outlined" /></TableCell>
+                </TableRow>
+                <TableRow>
+                
+                  <TableCell>Exercise3</TableCell>
+                  <TableCell><TextField id="outlined-basic1" size="small" value={newPlan?.exercise3} onChange={(e)=>{setNewPlan(prevPlan=>{ return {...prevPlan,exercise3:e.target.value}});}} variant="outlined" /></TableCell>
+                </TableRow>
+                <TableRow>
+                
+                  <TableCell>Exercise4</TableCell>
+                  <TableCell><TextField id="outlined-basic1" size="small" value={newPlan?.exercise4} onChange={(e)=>{setNewPlan(prevPlan=>{ return {...prevPlan,exercise4:e.target.value}});}} variant="outlined" /></TableCell>
+                </TableRow>
+                <TableRow>
+                
+                  <TableCell>Exercise5</TableCell>
+                  <TableCell><TextField id="outlined-basic1" size="small" value={newPlan?.exercise5} onChange={(e)=>{setNewPlan(prevPlan=>{ return {...prevPlan,exercise5:e.target.value}});}} variant="outlined" /></TableCell>
+                </TableRow>
+              </TableHead>
+            </Table>
+          </TableContainer>
+
+          <Button variant="contained" disabled={countCheck()} onClick={() => { addNewPlan(); }}>Submit</Button> 
+
         </Box>
       </Modal>
     </div>
   );
 }
+

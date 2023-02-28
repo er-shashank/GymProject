@@ -36,16 +36,6 @@ const rows = [
 export const WorkOutTable = (prop: any) => {
 
     const [selectedRadioBtn, setSelectedRadioBtn] = React.useState([false, false, false, false, false]);
-    // const [personalRecord, setPersonalRecord] = React.useState(
-    //     [prop.currentDay.exercise1.split("$")[1],
-    //     prop.currentDay.exercise2.split("$")[1],
-    //     prop.currentDay.exercise3.split("$")[1],
-    //     prop.currentDay.exercise4.split("$")[1],
-    //     prop.currentDay.exercise5.split("$")[1]]);
-
-    // function updatePersonalRecord(personalRecord:any) {
-    //     setPersonalRecord(personalRecord);
-    // };
 
     function updateFormDataOnSubmit() {
         prop.changeDay(selectedRadioBtn, prop.currentDay);

@@ -5,10 +5,11 @@ import { SpinnerLoading } from './utils/SpinnerLoading';
 import GymPlan from './models/GymPlan';
 import { GymHistoryTable } from './gymcomponents/GymHistory/GymHistory';
 import { WorkOutTable } from './utils/WorkOutTable';
-import { Button } from '@mui/material';
+import { Button, Toolbar } from '@mui/material';
 import { NavLink, Route } from 'react-router-dom';
 import { NestedModal } from './utils/ModalView';
 import SignIn from './TryingNewThings/SignIn';
+import { resetGymplanFunction } from './utils/UtilityFunctions/ResetGymplanFunction';
 
 
 
@@ -20,37 +21,37 @@ function App() {
   const [isLoading, setLoading] = useState(true);
   const [httpError, setHttpError] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
-  const [personalRecord, setPersonalRecord] = useState(['','','','','']);
+  const [personalRecord, setPersonalRecord] = useState(['', '', '', '', '']);
 
 
   const changeDay = (selectedRadioBtn: any, currentDay: GymPlan) => {
-    
-    fetch("http://localhost:8080/updatepr",
-    {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
 
-        "id": currentDay.id,
-        "body_part": currentDay.body_part,
-        "exercise1": personalRecord[0]=="" ? currentDay.exercise1 : currentDay.exercise1?.split("$")[0]+"$"+personalRecord[0],
-        "exercise2": personalRecord[1]=="" ? currentDay.exercise2 : currentDay.exercise2?.split("$")[0]+"$"+personalRecord[1],
-        "exercise3": personalRecord[2]=="" ? currentDay.exercise3 : currentDay.exercise3?.split("$")[0]+"$"+personalRecord[2],
-        "exercise4": personalRecord[3]=="" ? currentDay.exercise4 : currentDay.exercise4?.split("$")[0]+"$"+personalRecord[3],
-        "exercise5": personalRecord[4]=="" ? currentDay.exercise5 : currentDay.exercise5?.split("$")[0]+"$"+personalRecord[4]
-      })
-    }).then((result) => {
-      console.log("data pushed  "+result);
-    }).catch((err) => {
-      console.error(err);
-    });
-    
-    
-    setDayNo(((dayNo + 1) % 3)+1)  
-    
+    fetch("http://localhost:8080/updatepr",
+      {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+
+          "id": currentDay.id,
+          "body_part": currentDay.body_part,
+          "exercise1": personalRecord[0] == "" ? currentDay.exercise1 : currentDay.exercise1?.split("$")[0] + "$" + personalRecord[0],
+          "exercise2": personalRecord[1] == "" ? currentDay.exercise2 : currentDay.exercise2?.split("$")[0] + "$" + personalRecord[1],
+          "exercise3": personalRecord[2] == "" ? currentDay.exercise3 : currentDay.exercise3?.split("$")[0] + "$" + personalRecord[2],
+          "exercise4": personalRecord[3] == "" ? currentDay.exercise4 : currentDay.exercise4?.split("$")[0] + "$" + personalRecord[3],
+          "exercise5": personalRecord[4] == "" ? currentDay.exercise5 : currentDay.exercise5?.split("$")[0] + "$" + personalRecord[4]
+        })
+      }).then((result) => {
+        console.log("data pushed  " + result);
+      }).catch((err) => {
+        console.error(err);
+      });
+
+
+    setDayNo(((dayNo + 1) % 3) + 1)
+
 
     //pushing data to record
     let currenDate = new Date();
@@ -91,8 +92,8 @@ function App() {
       const nextWorkOut = await fetch(nextWorkoutUrl);
       const nextWorkOutJson = await nextWorkOut.json();
       setDayNo(nextWorkOutJson);
-      console.log("next "+nextWorkOutJson)
-      
+      console.log("next " + nextWorkOutJson)
+
       const baseUrl: string = "http://localhost:8080/gymplan";
       const url: string = `${baseUrl}?id=${dayNo}`;
       const reponse = await fetch(url);
@@ -103,15 +104,15 @@ function App() {
 
       const responseJson = await reponse.json();
       const responseData = responseJson;
-      const loadedGymPlan: GymPlan = responseData;  
-      
+      const loadedGymPlan: GymPlan = responseData;
+
 
       setCurrentday(loadedGymPlan);
-      setPersonalRecord( [loadedGymPlan.exercise1?.split("$")[1]!,
-                         loadedGymPlan.exercise2?.split("$")[1]!,
-                         loadedGymPlan.exercise3?.split("$")[1]!,
-                         loadedGymPlan.exercise4?.split("$")[1]!,
-                         loadedGymPlan.exercise5?.split("$")[1]!]);
+      setPersonalRecord([loadedGymPlan.exercise1?.split("$")[1]!,
+      loadedGymPlan.exercise2?.split("$")[1]!,
+      loadedGymPlan.exercise3?.split("$")[1]!,
+      loadedGymPlan.exercise4?.split("$")[1]!,
+      loadedGymPlan.exercise5?.split("$")[1]!]);
       setLoading(false);
     };
 
@@ -121,11 +122,16 @@ function App() {
     })
   }, [dayNo])
 
+
+
+
   if (isLoading) {
     return (
       <SpinnerLoading></SpinnerLoading>
     )
   }
+
+
 
   if (httpError) {
     return (
@@ -144,19 +150,25 @@ function App() {
       <SignIn></SignIn>
       </Route> */}
       <Route path='/' exact>
-      <WorkOutTable currentDay={currentDay} changeDay={changeDay} personalRecord={personalRecord} setPersonalRecord={setPersonalRecord}></WorkOutTable>
-      <NavLink to ='/history'> <Button variant="contained" >{showHistory ? 'Close History' : 'Show History'} </Button>
-      </NavLink>
+
+        <WorkOutTable currentDay={currentDay} changeDay={changeDay} personalRecord={personalRecord} setPersonalRecord={setPersonalRecord}></WorkOutTable>
+
+        <NavLink to='/history'> <Button variant="contained" >{showHistory ? 'Close History' : 'Show History'} </Button></NavLink>
+
       </Route>
-      
 
-
-      
 
       <Route path='/history' exact><GymHistoryTable></GymHistoryTable></Route>
-      
+
 
       <NestedModal></NestedModal>
+
+
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        <div />
+        <Button variant="contained" onClick={resetGymplanFunction}>Reset</Button>
+      </Toolbar>
+
 
     </div>
 

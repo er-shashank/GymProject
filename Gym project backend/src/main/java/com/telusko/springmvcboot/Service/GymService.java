@@ -73,7 +73,11 @@ public class GymService {
 		return (nextworkOut==0)? 1: nextworkOut;
     }
 
+    public void addNewplan(gymplan plan) {
+        repo.save(plan);
+    }
 
+    
     
 
 }
