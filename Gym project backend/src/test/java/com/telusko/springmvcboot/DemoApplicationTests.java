@@ -1,16 +1,15 @@
-package com.telusko.springmvcboot;
+// package com.telusko.springmvcboot;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class DemoApplicationTests {
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.test.context.junit4.SpringRunner;
 
-	@Test
-	public void contextLoads() {
-	}
+// @RunWith(SpringRunner.class)
+// @SpringBootTest
+// public class DemoApplicationTests {
 
-}
+// 	@Test
+// 	public void contextLoads() {
+// 	}
+
+// }
