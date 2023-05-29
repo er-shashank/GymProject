@@ -5,9 +5,12 @@ import java.util.Optional;
 
 import javax.websocket.server.PathParam;
 
+import com.telusko.springmvcboot.security.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,9 +44,13 @@ public class GymController {
 	@Autowired
 	GymService service;
 
+	@Autowired
+	AuthService authService;
+
 	@GetMapping("gymplan")
 
 	public gymplan getGymplanById(@RequestParam(name = "id") int id) {
+		User noUserLoggedIn = authService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("No user logged in"));
 		return service.getGymplanById(id);
 	}
 
@@ -56,8 +63,8 @@ public class GymController {
 	// }
 
 	@GetMapping("test")
-	public String getTest() {
-		return "It is working";
+	public ResponseEntity<String> getTest() {
+		return ResponseEntity.ok("Private endpoint accessed");
 	}
 
 	@GetMapping("gymhistory/{offset}/{pageSize}")
