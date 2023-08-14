@@ -16,14 +16,21 @@ export const GymHistoryTable = () => {
     const [bookPerPage] = useState(5);
     const [totalAmountofBooks, setTotalAmountofBooks] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const authToken = localStorage.getItem("authenticationToken");
+
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const baseUrl: string = "http://localhost:8080/gymhistory";
+            const baseUrl: string = "http://localhost:8080/api/gym/gymhistory";
 
             let url: string = `${baseUrl}/${currentPage - 1}/${bookPerPage}`;
 
-            const response = await fetch(url);
+            const response = await fetch(url , {
+                method: 'GET',
+                headers: {
+                  'Authorization': `Bearer ${authToken}`
+                },
+              });
 
             if (!response.ok) {
                 throw new Error('Something went wrong!');
@@ -161,7 +168,7 @@ export const GymHistoryTable = () => {
                     {totalPages > 1 &&
                         <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />}
 
-                    <NavLink type='button' to="/">
+                    <NavLink type='button' to="/workout">
                         Go Back</NavLink>
                 </div>
             </div>
