@@ -29,39 +29,49 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     //below method will be called first whenever we do any rest request
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String jwt = getJwtFromRequest(request);
         String requestURI = request.getRequestURI();
 
         //if the http request is login, then no need to authenticate it just bypass
-        if(requestURI.equals("/api/auth/login")){
-            filterChain.doFilter(request,response);
-            return;
-        }
+////        if(requestURI.equals("/api/auth/login")|| requestURI.equals("/api/auth/signup") || requestURI.equals("/api/auth/nextwork")){
+////                filterChain.doFilter(request,response);
+////            return;
+////        }
+//
+//        if(StringUtils.hasText(jwt) ){
+//            if(jwtProvider.validateToken(jwt)) {
+//                String username = jwtProvider.getUsernameFromJWT(jwt);
+//                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+//                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
+//                        null, userDetails.getAuthorities());
+//                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
+//            }
+//            else {
+//                // Token is invalid
+//                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                return;
+//            }
+//        }
+//        else {
+//            // Token is missing
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return;
+//        }
+        if(StringUtils.hasText(jwt) && jwtProvider.validateToken(jwt)){
+            String username = jwtProvider.getUsernameFromJWT(jwt);
 
-        if(StringUtils.hasText(jwt) ){
-            if(jwtProvider.validateToken(jwt)) {
-                String username = jwtProvider.getUsernameFromJWT(jwt);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
-                        null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
+                    null, userDetails.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-            else {
-                // Token is invalid
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        else {
-            // Token is missing
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
         filterChain.doFilter(request,response);
 
     }
