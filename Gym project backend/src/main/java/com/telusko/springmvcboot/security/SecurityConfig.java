@@ -3,10 +3,12 @@ package com.telusko.springmvcboot.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,8 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
             http.csrf().disable().authorizeRequests()
                     .antMatchers("/api/auth/**")
                     .permitAll()
-                    .antMatchers("/api/gym/**")
-                    .permitAll()
                     .anyRequest()
                     .authenticated();
 
@@ -48,6 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     }
 
+    /*
+    * below code ignores authentication for all pre-flight requests
+    */
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers(HttpMethod.OPTIONS, "/**");
+    }
 
     @Autowired
     //AuthenticationManagerBuilder is responsible to handle authentications in spring
