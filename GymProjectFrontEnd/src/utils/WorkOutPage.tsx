@@ -20,6 +20,7 @@ export const WorkOutPage = () => {
     const [showHistory, setShowHistory] = useState(false);
     const [personalRecord, setPersonalRecord] = useState(['', '', '', '', '']);
     const authToken = localStorage.getItem("authenticationToken")
+    const userName = localStorage.getItem("username");
 
     const changeDay = (selectedRadioBtn: any, currentDay: GymPlan) => {
 
@@ -29,7 +30,8 @@ export const WorkOutPage = () => {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
+                    'Authorization': `Bearer ${authToken}`,
+                    'UserName': `${userName}`
                 },
                 body: JSON.stringify({
 
@@ -61,7 +63,8 @@ export const WorkOutPage = () => {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
+                    'Authorization': `Bearer ${authToken}`,
+                    'UserName': `${userName}`
                 },
                 body: JSON.stringify({
 
@@ -91,7 +94,8 @@ export const WorkOutPage = () => {
             const response = await fetch(nextWorkoutUrl, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${authToken}`
+                    'Authorization': `Bearer ${authToken}`,
+                    'UserName': `${userName}`
                 },
             });
 
@@ -108,7 +112,8 @@ export const WorkOutPage = () => {
             const reponse = await fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${authToken}`
+                    'Authorization': `Bearer ${authToken}`,
+                    'UserName': `${userName}`
                 },
             });
 

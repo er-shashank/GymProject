@@ -1,28 +1,19 @@
-package com.telusko.springmvcboot;
+package com.telusko.springmvcboot.controller;
 
 import java.util.List;
-import java.util.Optional;
-
-import javax.websocket.server.PathParam;
 
 import com.telusko.springmvcboot.security.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.google.gson.Gson;
 import com.telusko.springmvcboot.Repository.GymRepo;
 import com.telusko.springmvcboot.Repository.WorkOutHistoryRepo;
 import com.telusko.springmvcboot.Service.GymService;
 import com.telusko.springmvcboot.model.WorkOutHistory;
-import com.telusko.springmvcboot.model.gymplan;
+import com.telusko.springmvcboot.model.Gymplan;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/gym")
 public class GymController {
@@ -41,7 +32,7 @@ public class GymController {
 
 	@GetMapping("gymplan")
 
-	public gymplan getGymplanById(@RequestParam(name = "id") int id) {
+	public Gymplan getGymplanById(@RequestParam(name = "id") int id) {
 		User noUserLoggedIn = authService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("No user logged in"));
 		return service.getGymplanById(id);
 	}
@@ -103,11 +94,11 @@ public class GymController {
 	}
 
 	@PutMapping("updatepr")
-	public void updatePRRecord(@RequestBody gymplan planWithPR) {
+	public void updatePRRecord(@RequestBody Gymplan planWithPR) {
 		service.updatePR(planWithPR);
 	}
 	@PostMapping("addnewplan")
-	public void addNewplan(@RequestBody gymplan plan) {
+	public void addNewplan(@RequestBody Gymplan plan) {
 		service.addNewplan(plan);
 	}
 

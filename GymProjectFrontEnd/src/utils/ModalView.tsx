@@ -34,6 +34,8 @@ export const NestedModal = () => {
   const [newPlan, setNewPlan] = React.useState<GymPlan>();
   const loadedGymPlan= new GymPlan();  
   const authToken = localStorage.getItem("authenticationToken")  
+  const userName = localStorage.getItem("username");
+
 
   function addNewPlan(){
     fetch("http://localhost:8080/api/gym/addnewplan",
@@ -42,7 +44,8 @@ export const NestedModal = () => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`
+        'Authorization': `Bearer ${authToken}`,
+        'UserName': `${userName}`
       },
       body: JSON.stringify({
 

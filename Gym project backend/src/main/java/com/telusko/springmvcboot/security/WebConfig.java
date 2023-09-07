@@ -1,4 +1,4 @@
-package com.telusko.springmvcboot;
+package com.telusko.springmvcboot.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
         corsRegistry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("*")
-                .maxAge(3600L)
+                .maxAge(3600L)//preflight response expiry time
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization")
                 .allowCredentials(true);

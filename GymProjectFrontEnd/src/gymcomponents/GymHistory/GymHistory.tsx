@@ -17,6 +17,7 @@ export const GymHistoryTable = () => {
     const [totalAmountofBooks, setTotalAmountofBooks] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const authToken = localStorage.getItem("authenticationToken");
+    const userName = localStorage.getItem("username");
 
 
     useEffect(() => {
@@ -25,12 +26,13 @@ export const GymHistoryTable = () => {
 
             let url: string = `${baseUrl}/${currentPage - 1}/${bookPerPage}`;
 
-            const response = await fetch(url , {
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
-                  'Authorization': `Bearer ${authToken}`
+                    'Authorization': `Bearer ${authToken}`,
+                    'UserName': `${userName}`
                 },
-              });
+            });
 
             if (!response.ok) {
                 throw new Error('Something went wrong!');
@@ -94,40 +96,6 @@ export const GymHistoryTable = () => {
         <div>
             <div className='container'>
                 <div>
-
-                    {/* <div className='mt-3'>
-                        <h5>Number of results: (22)</h5>
-                    </div>
-                    <p>
-                        1 to 5 of 22 items:
-                    </p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th scope='col'>Body Target</th>
-                                <th scope='col'>Exercise1</th>
-                                <th scope='col'>Exercise2</th>
-                                <th scope='col'>Exercise3</th>
-                                <th scope='col'>Exercise4</th>
-                                <th scope='col'>Exercise5</th>
-                            </tr>
-                        </thead>
-                        <tr >
-                            {gymHistory.map(book => (
-                                <SearchBook book={book} key={book.id} />
-                            ))}
-                        </tr>
-                    </table>
-
-
-
-                    //table for history
-                                
-
-
-                    {totalPages > 1 &&
-                        <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />} */}
-
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
@@ -143,24 +111,24 @@ export const GymHistoryTable = () => {
                                 </TableRow>
                             </TableHead>
 
-                            { Object.keys(gymHistory).length == 0 ? <div>No Records found</div> :
-                            <TableBody>
-                                {gymHistory.map((row) => (
-                                    <TableRow
-                                        key={row.id}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">{row.date} </TableCell>
-                                        <TableCell align="right">{row.body_part} </TableCell>
-                                        <TableCell align="right">{row.exercise1?.split("$")[0]} </TableCell>
-                                        <TableCell align="right">{row.exercise2?.split("$")[0]} </TableCell>
-                                        <TableCell align="right">{row.exercise3?.split("$")[0]} </TableCell>
-                                        <TableCell align="right">{row.exercise4?.split("$")[0]} </TableCell>
-                                        <TableCell align="right">{row.exercise5?.split("$")[0]}  </TableCell>
+                            {Object.keys(gymHistory).length == 0 ? <div>No Records found</div> :
+                                <TableBody>
+                                    {gymHistory.map((row) => (
+                                        <TableRow
+                                            key={row.id}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row">{row.date} </TableCell>
+                                            <TableCell align="right">{row.body_part} </TableCell>
+                                            <TableCell align="right">{row.exercise1?.split("$")[0]} </TableCell>
+                                            <TableCell align="right">{row.exercise2?.split("$")[0]} </TableCell>
+                                            <TableCell align="right">{row.exercise3?.split("$")[0]} </TableCell>
+                                            <TableCell align="right">{row.exercise4?.split("$")[0]} </TableCell>
+                                            <TableCell align="right">{row.exercise5?.split("$")[0]}  </TableCell>
 
-                                    </TableRow>
-                                ))}
-                            </TableBody>}
+                                        </TableRow>
+                                    ))}
+                                </TableBody>}
 
 
                         </Table>

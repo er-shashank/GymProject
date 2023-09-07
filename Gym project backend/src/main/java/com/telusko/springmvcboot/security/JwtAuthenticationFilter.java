@@ -33,37 +33,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String jwt = getJwtFromRequest(request);
+        String usernameFromRequest= getUsernameFromRequest(request);
         String requestURI = request.getRequestURI();
 
-        //if the http request is login, then no need to authenticate it just bypass
-////        if(requestURI.equals("/api/auth/login")|| requestURI.equals("/api/auth/signup") || requestURI.equals("/api/auth/nextwork")){
-////                filterChain.doFilter(request,response);
-////            return;
-////        }
-//
-//        if(StringUtils.hasText(jwt) ){
-//            if(jwtProvider.validateToken(jwt)) {
-//                String username = jwtProvider.getUsernameFromJWT(jwt);
-//                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-//                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
-//                        null, userDetails.getAuthorities());
-//                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
-//            }
-//            else {
-//                // Token is invalid
-//                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                return;
-//            }
-//        }
-//        else {
-//            // Token is missing
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            return;
-//        }
+
         if(StringUtils.hasText(jwt) && jwtProvider.validateToken(jwt)){
             String username = jwtProvider.getUsernameFromJWT(jwt);
+
+            //if logged in username and username to which jwt token belongs to does not match
+            if(!username.equals(usernameFromRequest)) return;
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
@@ -74,6 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request,response);
 
+    }
+
+    private String getUsernameFromRequest(HttpServletRequest request) {
+        return request.getHeader("UserName");
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
