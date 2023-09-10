@@ -88,7 +88,7 @@ export const WorkOutPage = () => {
 
 
     useEffect(() => {
-        const fetchBooks = async () => {
+        const fetchWorkOut = async () => {
 
             const nextWorkoutUrl: string = "http://localhost:8080/api/gym/nextwork";
             const response = await fetch(nextWorkoutUrl, {
@@ -135,7 +135,7 @@ export const WorkOutPage = () => {
             setLoading(false);
         };
 
-        fetchBooks().catch((error: any) => {
+        fetchWorkOut().catch((error: any) => {
             setLoading(false);
             setHttpError(error.message);
         })

@@ -49,7 +49,7 @@ const SignupPage: React.FC = () => {
   }
 
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     // Perform signup logic here
     // e.g., send signup request to the server, validate input, etc.
@@ -63,28 +63,56 @@ const SignupPage: React.FC = () => {
     const signUpPayLoad: SignUpPayLoad = new SignUpPayLoad(username, password, confirmPassword, email);
     console.log("Signup submitted " + signUpPayLoad.email);
 
+    try {
+      const singupCall = await fetch("http://localhost:8080/api/auth/signup",
+        {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "username": signUpPayLoad.username,
+            "password": signUpPayLoad.password,
+            "email": signUpPayLoad.email
+          })
+        });
 
-    fetch("http://localhost:8080/api/auth/signup",
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "username": signUpPayLoad.username,
-          "password": signUpPayLoad.password,
-          "email": signUpPayLoad.email
-        })
-      }).then((result) => {
-        console.log("singup completed  " + result);
-      }).catch((err) => {
-        console.error(err);
-      });
+      if (!singupCall.ok) throw new Error("Username already exist");
 
-    resetForm();
-    alert("sign up completed!!")
-    window.location.href = "http://localhost:3000/";
+      console.log("singup completed  " + singupCall);
+
+      alert("sign up completed!!")
+      window.location.href = "http://localhost:3000/";
+    }
+    catch (e) {
+      alert("sign up incomplete!!  "+ e)
+    }
+
+    // fetch("http://localhost:8080/api/auth/signup",
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       "username": signUpPayLoad.username,
+    //       "password": signUpPayLoad.password,
+    //       "email": signUpPayLoad.email
+    //     })
+    //   }).then((result) => {
+    //     if (!result.ok) {
+    //       throw new Error("Username already exist")
+    //     }
+    //     console.log("singup completed  " + result);
+    //   }).catch((err) => {
+    //     console.error(err);
+    //   });
+
+    // resetForm();
+    // alert("sign up completed!!")
+    // window.location.href = "http://localhost:3000/";
 
   };
 

@@ -1,21 +1,16 @@
 package com.telusko.springmvcboot.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.telusko.springmvcboot.model.primarykey.GymPlanPrimaryKey;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "gymplan")
 public class Gymplan
 {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-	private int id;
-	
+	@EmbeddedId
+	private GymPlanPrimaryKey gymPlanPrimaryKey;
+
 	@Column(name = "body_part")
 	private String body_part;
 	
@@ -40,10 +35,10 @@ public class Gymplan
 	}
 
 
-	public Gymplan(int id, String body_part, String exercise1, String exercise2, String exercise3, String exercise4,
-				   String exercise5) {
+	public Gymplan(GymPlanPrimaryKey gymPlanPrimaryKey, String body_part, String exercise1, String exercise2, String exercise3, String exercise4,
+				   String exercise5, String username) {
 		super();
-		this.id = id;
+		this.gymPlanPrimaryKey = gymPlanPrimaryKey;
 		this.body_part = body_part;
 		this.exercise1 = exercise1;
 		this.exercise2 = exercise2;
@@ -55,21 +50,24 @@ public class Gymplan
 
 	@Override
 	public String toString() {
-		return "gymplan [id=" + id + ", body_part=" + body_part + ", exercise1=" + exercise1 + ", exercise2="
-				+ exercise2 + ", exercise3=" + exercise3 + ", exercise4=" + exercise4 + ", exercise5=" + exercise5
-				+ "]";
+		return "Gymplan{" +
+				"gymPlanPrimaryKey=" + gymPlanPrimaryKey +
+				", body_part='" + body_part + '\'' +
+				", exercise1='" + exercise1 + '\'' +
+				", exercise2='" + exercise2 + '\'' +
+				", exercise3='" + exercise3 + '\'' +
+				", exercise4='" + exercise4 + '\'' +
+				", exercise5='" + exercise5 + '\'' +
+				'}';
 	}
 
-
-	public int getId() {
-		return id;
+	public GymPlanPrimaryKey getGymPlanPrimaryKey() {
+		return gymPlanPrimaryKey;
 	}
 
-
-	public void setId(int id) {
-		this.id = id;
+	public void setGymPlanPrimaryKey(GymPlanPrimaryKey gymPlanPrimaryKey) {
+		this.gymPlanPrimaryKey = gymPlanPrimaryKey;
 	}
-
 
 	public String getBody_part() {
 		return body_part;

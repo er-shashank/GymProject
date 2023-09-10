@@ -45,6 +45,14 @@ public class WorkOutHistory {
 
 	@Column(name = "exercise5")
 	private String exercise5;
+
+
+	@Column(name = "username")
+	private String username;
+
+
+	@Column(name = "user_exercise_id")
+	private int user_exercise_id;
 	
 	
 	

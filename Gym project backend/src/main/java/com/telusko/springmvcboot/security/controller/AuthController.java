@@ -3,6 +3,7 @@ package com.telusko.springmvcboot.security.controller;
 import com.telusko.springmvcboot.Service.GymService;
 import com.telusko.springmvcboot.security.dto.LoginRequest;
 import com.telusko.springmvcboot.security.dto.RegisterRequest;
+import com.telusko.springmvcboot.security.exception.ErrorMessages;
 import com.telusko.springmvcboot.security.service.AuthService;
 import com.telusko.springmvcboot.security.service.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity signup (@RequestBody RegisterRequest registerRequest) {
-        authService.signUp(registerRequest);
+        boolean result = authService.signUp(registerRequest);
 
         //below code sends status of http request back to the client, you can check several status available
         //for learning
-        return new ResponseEntity(HttpStatus.OK);
+        return result ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(ErrorMessages.UserExist,HttpStatus.CONFLICT);
     }
 
     @PostMapping("/login")

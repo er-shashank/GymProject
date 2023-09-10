@@ -34,13 +34,23 @@ public class AuthService {
     @Autowired
     private JwtProvider jwtProvider;
 
-    public void signUp(RegisterRequest registerRequest){
+    public boolean signUp(RegisterRequest registerRequest){
+        if(isUserNameExistAlready(registerRequest.getUsername())){
+            return false;
+        }
+
         User user= new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(encodePassword(registerRequest.getPassword()));
         user.setEmail(  registerRequest.getEmail());
 
         userRepository.save(user);
+
+        return true;
+    }
+
+    private boolean isUserNameExistAlready(String username) {
+       return userRepository.findByusername(username).isPresent();
     }
 
     //below function will encode the password for a user before storing it in DB
@@ -56,6 +66,7 @@ public class AuthService {
                 .authenticate(new UsernamePasswordAuthenticationToken
                         (loginRequest.getUsername(),loginRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authenticate);
+
             String authenticationToken = jwtProvider.generateToken(authenticate);
             return new AuthenticationResponse(authenticationToken, loginRequest.getUsername());
         }
