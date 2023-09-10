@@ -15,8 +15,7 @@ import lombok.Data;
 @Table(name = "workouthistory")
 
 public class WorkOutHistory {
-	
-	
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

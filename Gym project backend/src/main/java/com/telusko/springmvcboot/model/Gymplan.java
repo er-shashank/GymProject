@@ -7,11 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Data;
-
 @Entity
 @Table(name = "gymplan")
-public class gymplan 
+public class Gymplan
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,13 +35,13 @@ public class gymplan
 	private String exercise5;
 	
 	
-	public gymplan() {
+	public Gymplan() {
 		super();
 	}
 
 
-	public gymplan(int id, String body_part, String exercise1, String exercise2, String exercise3, String exercise4,
-			String exercise5) {
+	public Gymplan(int id, String body_part, String exercise1, String exercise2, String exercise3, String exercise4,
+				   String exercise5) {
 		super();
 		this.id = id;
 		this.body_part = body_part;

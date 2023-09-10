@@ -33,15 +33,19 @@ export const NestedModal = () => {
 
   const [newPlan, setNewPlan] = React.useState<GymPlan>();
   const loadedGymPlan= new GymPlan();  
-      
+  const authToken = localStorage.getItem("authenticationToken")  
+  const userName = localStorage.getItem("username");
+
 
   function addNewPlan(){
-    fetch("http://localhost:8080/addnewplan",
+    fetch("http://localhost:8080/api/gym/addnewplan",
     {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+        'UserName': `${userName}`
       },
       body: JSON.stringify({
 
@@ -59,7 +63,7 @@ export const NestedModal = () => {
     });
 
     // this line redirect to home page
-    window.location.href = "http://localhost:3000/";
+    window.location.href = "http://localhost:3000/workout";
 
   }
 
