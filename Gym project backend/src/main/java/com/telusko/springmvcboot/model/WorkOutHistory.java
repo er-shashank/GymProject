@@ -30,7 +30,7 @@ public class WorkOutHistory {
 	private String body_part;
 	
 	@Column(name = "date")
-	private String date;
+	private Date date;
 
 	@Column(name = "exercise1")
 	private String exercise1;

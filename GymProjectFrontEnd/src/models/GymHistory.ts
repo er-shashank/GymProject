@@ -7,7 +7,7 @@ class GymHistory {
     exercise3?: string;
     exercise4?: string;
     exercise5?: string;
-    date?: string;
+    date?: Date;
 
 
 
@@ -21,7 +21,7 @@ class GymHistory {
         , exercise3?: string
         , exercise4?: string
         , exercise5?: string
-        ,date?: string
+        ,date?: Date
         ,exerciseId       ?:        number
 
 

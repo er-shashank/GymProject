@@ -1,5 +1,7 @@
+import GymPlanPrimaryKey from "./GymPlanPrimaryKey";
+
 class GymPlan {
-    id       ?:        number;
+    gymPlanPrimaryKey?: GymPlanPrimaryKey;
     body_part?: string;
     exercise1?: string;
     exercise2?: string;
@@ -9,7 +11,7 @@ class GymPlan {
 
     constructor(
 
-        id?: number
+        gymPlanPrimaryKey?: GymPlanPrimaryKey
         , body_part?: string
         , exercise1?: string
         , exercise2?: string
@@ -19,7 +21,7 @@ class GymPlan {
 
 
     ) {
-        this.id = id
+        this.gymPlanPrimaryKey = gymPlanPrimaryKey
         this.body_part = body_part
         this.exercise1 = exercise1
         this.exercise2 = exercise2

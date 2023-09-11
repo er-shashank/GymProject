@@ -118,7 +118,7 @@ export const GymHistoryTable = () => {
                                             key={row.id}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
-                                            <TableCell component="th" scope="row">{row.date} </TableCell>
+                                            <TableCell component="th" scope="row">{row.date?.toString()} </TableCell>
                                             <TableCell align="right">{row.body_part} </TableCell>
                                             <TableCell align="right">{row.exercise1?.split("$")[0]} </TableCell>
                                             <TableCell align="right">{row.exercise2?.split("$")[0]} </TableCell>

@@ -34,8 +34,10 @@ export const WorkOutPage = () => {
                     'UserName': `${userName}`
                 },
                 body: JSON.stringify({
-
-                    "id": currentDay.id,
+                    "gymPlanPrimaryKey": {
+                        "userId": currentDay.gymPlanPrimaryKey?.userId,
+                        "exerciseId": currentDay.gymPlanPrimaryKey?.exerciseId
+                    },
                     "body_part": currentDay.body_part,
                     "exercise1": personalRecord[0] == "" ? currentDay.exercise1 : currentDay.exercise1?.split("$")[0] + "$" + personalRecord[0],
                     "exercise2": personalRecord[1] == "" ? currentDay.exercise2 : currentDay.exercise2?.split("$")[0] + "$" + personalRecord[1],
@@ -50,12 +52,13 @@ export const WorkOutPage = () => {
             });
 
 
-        setDayNo(((dayNo + 1) % 3) + 1)
+        //setDayNo(((dayNo + 1) % 3) + 1)
 
 
         //pushing data to record
         let currenDate = new Date();
-        let date = currenDate.getFullYear() + '-' + (currenDate.getMonth() + 1) + '-' + currenDate.getDate();
+        // let date = currenDate.getFullYear() + '-' + (currenDate.getMonth() + 1) + '-' + currenDate.getDate();
+        let date = currenDate;
         console.log(personalRecord);
         fetch("http://localhost:8080/api/gym/gymhistory",
             {
@@ -68,7 +71,7 @@ export const WorkOutPage = () => {
                 },
                 body: JSON.stringify({
 
-                    "exerciseId": currentDay.id,
+                    "exerciseId": currentDay.gymPlanPrimaryKey?.exerciseId,
                     "body_part": currentDay.body_part,
                     "date": date,
                     "exercise1": selectedRadioBtn[0] ? currentDay.exercise1 : "NA",
@@ -173,7 +176,7 @@ export const WorkOutPage = () => {
                 startIcon={<Home />}
                 className="home-button"
             ></Button> </NavLink>
-            
+
             <WorkOutTable currentDay={currentDay} changeDay={changeDay} personalRecord={personalRecord} setPersonalRecord={setPersonalRecord}></WorkOutTable>
 
             <NavLink to='/history'> <Button variant="contained" >{showHistory ? 'Close History' : 'Show History'} </Button></NavLink>
