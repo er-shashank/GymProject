@@ -51,7 +51,7 @@ export const GymHistoryTable = () => {
             responseJson.content.forEach((history: GymHistory) => {
                 LoadedGymHistory.push({
                     id: history.id,
-                    exercise_id: history.exercise_id,
+                    exerciseId: history.exerciseId,
                     body_part: history.body_part,
                     exercise1: history.exercise1,
                     exercise2: history.exercise2,

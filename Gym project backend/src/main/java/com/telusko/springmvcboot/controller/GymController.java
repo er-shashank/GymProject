@@ -6,6 +6,7 @@ import com.telusko.springmvcboot.security.exception.ErrorMessages;
 import com.telusko.springmvcboot.security.exception.GymException;
 import com.telusko.springmvcboot.security.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -28,53 +29,58 @@ public class GymController {
     WorkOutHistoryRepo workHist;
 
     @Autowired
-    GymService service;
+    GymService gymService;
 
     @Autowired
     AuthService authService;
 
+
+    /*
+    * tested and working
+    * */
     @GetMapping("gymplan")
 
     public Gymplan getGymplanById(@RequestParam(name = "id") int id, @AuthenticationPrincipal User authenticatedUser) {
         String userName = authenticatedUser.getUsername();
         if (userName.equals("") || userName == null) throw new GymException(ErrorMessages.UserExist);
         User noUserLoggedIn = authService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("No user logged in"));
-        return service.getGymplanById(id);
+        return gymService.getGymplanById(id);
     }
 
+    /*
+    * Tested and working
+    * */
     @GetMapping("/gymPlans/count")
-    public int getGymPlans(@AuthenticationPrincipal User authenticatedUser) {
-        int numberOfPlans = service.totalNumberOfPlans();
+    public int getGymPlans() {
+        int numberOfPlans = gymService.totalNumberOfPlans();
         return numberOfPlans;
     }
 
     @GetMapping("test")
     public ResponseEntity<String> getTest() {
+
         return ResponseEntity.ok("Private endpoint accessed");
     }
+
 
     @GetMapping("gymhistory/{offset}/{pageSize}")
     public String getAllBooksPaged(@PathVariable int offset, @PathVariable int pageSize) {
 
-
-        // Page<WorkOutHistory> workHistory = workHist.findAll(PageRequest.of(offset, pageSize));
-        // Gson gson = new Gson();
-        // String jsonCartList = gson.toJson(workHistory);
-        // // if(workHistory.isEmpty()) { throw new NullPointerException("nothing is
-        // // there-------------------------->");}
-        // return jsonCartList;
-        return service.getAllBooksBypages(offset, pageSize);
+        return gymService.getAllHistoryBypages(offset, pageSize);
 
     }
 
     @GetMapping("gymhistory")
-    public List<WorkOutHistory> getAllBooks() {
+    public List<WorkOutHistory> getUserHistory() {
 
-        return workHist.findAll();
-
+//        return workHist.findAll();
+        return gymService.getUserHistory();
     }
 
 
+    /*
+    * under test
+    * */
     @GetMapping("nextwork")
     public int nextWorkout() {
 
@@ -85,26 +91,31 @@ public class GymController {
         // int totalWorkOutAvailable = repo.totalWorkOutAvailable();
 
         // return (lastWorkOut + 1) % totalWorkOutAvailable;
-        return service.nextWorkout();
+        return gymService.nextWorkout();
 
     }
 
     @PostMapping("gymhistory")
-    public WorkOutHistory putWorkoutRecord(@RequestBody WorkOutHistory work) {
-        workHist.save(work);
-        return work;
+    public ResponseEntity putWorkoutRecord(@RequestBody WorkOutHistory work) {
+
+
+        gymService.addRecordInHistory(work);
+        return new ResponseEntity(HttpStatus.OK);
 
     }
 
     @PutMapping("updatepr")
     public void updatePRRecord(@RequestBody Gymplan planWithPR) {
-        service.updatePR(planWithPR);
+        gymService.updatePR(planWithPR);
     }
 
+    /*
+    * test completed
+    * */
     @PostMapping("addnewplan")
     public void addNewplan(@RequestBody Gymplan plan) {
 
-        service.addNewplan(plan);
+        gymService.addNewplan(plan);
     }
 
 

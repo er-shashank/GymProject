@@ -1,5 +1,6 @@
 package com.telusko.springmvcboot.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.telusko.springmvcboot.model.primarykey.GymPlanPrimaryKey;
@@ -8,7 +9,6 @@ import com.telusko.springmvcboot.security.exception.ErrorMessages;
 import com.telusko.springmvcboot.security.exception.GymException;
 import com.telusko.springmvcboot.security.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class GymService {
 
 
     public void updatePR(Gymplan planWithPR) {
-//        Optional<Gymplan> planToUpadte = gymRepo.findById(planWithPR.getId());
+//      Optional<Gymplan> planToUpadte = gymRepo.findById(planWithPR.getId());
         Optional<Gymplan> planToUpadte = gymRepo.findById(planWithPR.getGymPlanPrimaryKey());
 
         if (!planWithPR.toString().equals(planToUpadte.get().toString())) {
@@ -60,8 +60,8 @@ public class GymService {
 //        String[] planList = plan.split(",");
 //        return new Gymplan(Integer.parseInt(planList[0]), planList[1], planList[2], planList[3], planList[4],
 //                planList[5], planList[6]);
-        GymPlanPrimaryKey gymId= new GymPlanPrimaryKey(getCurrentUserId(),id);
-        Gymplan plan = gymRepo.findById(gymId).orElseThrow(()-> new GymException(ErrorMessages.NoGymPlan));
+        GymPlanPrimaryKey gymId = new GymPlanPrimaryKey(getCurrentUserId(), id);
+        Gymplan plan = gymRepo.findById(gymId).orElseThrow(() -> new GymException(ErrorMessages.NoGymPlan));
 
         return plan;
     }
@@ -78,7 +78,10 @@ public class GymService {
         return userName;
     }
 
-    public String getAllBooksBypages(int offset, int pageSize) {
+    /*
+     * pending
+     * */
+    public String getAllHistoryBypages(int offset, int pageSize) {
 
         Page<WorkOutHistory> workHistory = workHist.findAll(PageRequest.of(offset, pageSize));
         Gson gson = new Gson();
@@ -90,26 +93,44 @@ public class GymService {
     }
 
     public int nextWorkout() {
-        String lastWorkOutstring = workHist.findLastExerciseDone();
+        String lastWorkOutstring = workHist.findLastExerciseDone(getCurrentUserId());
 
-        if (lastWorkOutstring == null) return 1;
+        if (lastWorkOutstring == null) return 0;
 
 
         Integer lastWorkOut = Integer.parseInt(lastWorkOutstring);
-        int totalWorkOutAvailable = gymRepo.totalWorkOutAvailable();
-        int nextworkOut = ((lastWorkOut + 1) % (totalWorkOutAvailable + 1));
+        int totalWorkOutAvailable = totalNumberOfPlans();
+        int nextworkOut = ((lastWorkOut + 1) % (totalWorkOutAvailable));
 
 
-        return (nextworkOut == 0) ? 1 : nextworkOut;
+        return nextworkOut;
     }
 
     public void addNewplan(Gymplan plan) {
+        String maxWorkoutId= gymRepo.maxWorkoutId(getCurrentUserId());
+
+        Integer lastWorkOut;
+        if (maxWorkoutId == null)
+            lastWorkOut = -1;
+        else
+            lastWorkOut = Integer.parseInt(maxWorkoutId);
+
+        GymPlanPrimaryKey gymPlanPrimaryKey = new GymPlanPrimaryKey(getCurrentUserId(), lastWorkOut + 1);
+        plan.setGymPlanPrimaryKey(gymPlanPrimaryKey);
         gymRepo.save(plan);
     }
 
 
     public int totalNumberOfPlans() {
-        return gymRepo.totalWorkOutAvailable();
+        return gymRepo.totalWorkOutAvailable(getCurrentUserId());
     }
 
+    public List<WorkOutHistory> getUserHistory() {
+        return workHist.findAllByUserId(getCurrentUserId());
+    }
+
+    public void addRecordInHistory(WorkOutHistory work) {
+        work.setUserId(getCurrentUserId());
+        workHist.save(work);
+    }
 }

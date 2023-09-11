@@ -14,7 +14,7 @@ import { LogoutFunction } from "./UtilityFunctions/LogoutFunction"
 export const WorkOutPage = () => {
 
     const [currentDay, setCurrentday] = useState<GymPlan>()
-    const [dayNo, setDayNo] = useState(1);
+    const [dayNo, setDayNo] = useState(0);
     const [isLoading, setLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
     const [showHistory, setShowHistory] = useState(false);
@@ -68,7 +68,7 @@ export const WorkOutPage = () => {
                 },
                 body: JSON.stringify({
 
-                    "exercise_id": currentDay.id,
+                    "exerciseId": currentDay.id,
                     "body_part": currentDay.body_part,
                     "date": date,
                     "exercise1": selectedRadioBtn[0] ? currentDay.exercise1 : "NA",

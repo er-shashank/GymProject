@@ -9,11 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "workouthistory")
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class WorkOutHistory {
 
 
@@ -21,10 +25,7 @@ public class WorkOutHistory {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
 	private int id;
-	
-	@Column(name = "exercise_id")
-	private int exercise_id;
-	
+
 	@Column(name = "body_part")
 	private String body_part;
 	
@@ -47,106 +48,28 @@ public class WorkOutHistory {
 	private String exercise5;
 
 
-	@Column(name = "username")
-	private String username;
+	@Column(name = "user_id")
+	private Long userId;
 
 
-	@Column(name = "user_exercise_id")
-	private int user_exercise_id;
-	
-	
-	
-	public WorkOutHistory() {
-		super();
+	@Column(name = "exercise_id")
+	private Integer exerciseId;
+
+
+	@Override
+	public String toString() {
+		return "WorkOutHistory{" +
+				"id=" + id +
+				", body_part='" + body_part + '\'' +
+				", date='" + date + '\'' +
+				", exercise1='" + exercise1 + '\'' +
+				", exercise2='" + exercise2 + '\'' +
+				", exercise3='" + exercise3 + '\'' +
+				", exercise4='" + exercise4 + '\'' +
+				", exercise5='" + exercise5 + '\'' +
+				", userId=" + userId +
+				", exerciseId=" + exerciseId +
+				'}';
 	}
-	
-	public WorkOutHistory(int id, int exercise_id, String body_part, String date, String exercise1, String exercise2,
-			String exercise3, String exercise4, String exercise5) {
-		super();
-		this.id = id;
-		this.exercise_id = exercise_id;
-		this.body_part = body_part;
-		this.date = date;
-		this.exercise1 = exercise1;
-		this.exercise2 = exercise2;
-		this.exercise3 = exercise3;
-		this.exercise4 = exercise4;
-		this.exercise5 = exercise5;
-	}
-	
-	
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getExercise_id() {
-		return exercise_id;
-	}
-
-	public void setExercise_id(int exercise_id) {
-		this.exercise_id = exercise_id;
-	}
-
-	public String getBody_part() {
-		return body_part;
-	}
-
-	public void setBody_part(String body_part) {
-		this.body_part = body_part;
-	}
-
-	public String getDate() {
-		return date;
-	} 	
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public String getExercise1() {
-		return exercise1;
-	}
-
-	public void setExercise1(String exercise1) {
-		this.exercise1 = exercise1;
-	}
-
-	public String getExercise2() {
-		return exercise2;
-	}
-
-	public void setExercise2(String exercise2) {
-		this.exercise2 = exercise2;
-	}
-
-	public String getExercise3() {
-		return exercise3;
-	}
-
-	public void setExercise3(String exercise3) {
-		this.exercise3 = exercise3;
-	}
-
-	public String getExercise4() {
-		return exercise4;
-	}
-
-	public void setExercise4(String exercise4) {
-		this.exercise4 = exercise4;
-	}
-
-	public String getExercise5() {
-		return exercise5;
-	}
-
-	public void setExercise5(String exercise5) {
-		this.exercise5 = exercise5;
-	}
-
 }
 

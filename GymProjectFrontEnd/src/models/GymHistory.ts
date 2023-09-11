@@ -1,6 +1,6 @@
 class GymHistory {
     id       ?:        number;
-    exercise_id       ?:        number;
+    exerciseId       ?:        number;
     body_part?: string;
     exercise1?: string;
     exercise2?: string;
@@ -22,12 +22,12 @@ class GymHistory {
         , exercise4?: string
         , exercise5?: string
         ,date?: string
-        ,exercise_id       ?:        number
+        ,exerciseId       ?:        number
 
 
     ) {
         this.id = id
-        this.exercise_id = exercise_id
+        this.exerciseId = exerciseId
         this.body_part = body_part
         this.exercise1 = exercise1
         this.exercise2 = exercise2
