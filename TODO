@@ -1,6 +1,7 @@
 if a username already exist dont allow duplicate [done]
 -----------------------------------------------------------------------------------
 create user base
+user can have max 10 plans
 customizing plan on the fly
 note for future
 visualization for weight tracking

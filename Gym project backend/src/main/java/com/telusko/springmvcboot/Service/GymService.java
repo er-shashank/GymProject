@@ -1,6 +1,5 @@
 package com.telusko.springmvcboot.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +9,7 @@ import com.telusko.springmvcboot.security.exception.ErrorMessages;
 import com.telusko.springmvcboot.security.exception.GymException;
 import com.telusko.springmvcboot.security.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -80,15 +80,18 @@ public class GymService {
     }
 
     /*
-     * pending
+     * done and tested
      * */
     public String getAllHistoryBypages(int offset, int pageSize) {
+        List<WorkOutHistory> histList = workHist.findAllByUserId(getCurrentUserId());
+        Integer totalRecordForUser = histList.size();
 
-        Page<WorkOutHistory> workHistory = workHist.findAll(PageRequest.of(offset, pageSize));
+        List<WorkOutHistory> userHistoryList = workHist.findHistWithPagination(pageSize * offset, pageSize, getCurrentUserId());
+
+        Page<WorkOutHistory> page = new PageImpl<>(userHistoryList, PageRequest.of(offset, pageSize), totalRecordForUser);
         Gson gson = new Gson();
-        String jsonCartList = gson.toJson(workHistory);
-        // if(workHistory.isEmpty()) { throw new NullPointerException("nothing is
-        // there-------------------------->");}
+        String jsonCartList = gson.toJson(page);
+
         return jsonCartList;
 
     }
@@ -108,7 +111,7 @@ public class GymService {
     }
 
     public void addNewplan(Gymplan plan) {
-        String maxWorkoutId= gymRepo.maxWorkoutId(getCurrentUserId());
+        String maxWorkoutId = gymRepo.maxWorkoutId(getCurrentUserId());
 
         Integer lastWorkOut;
         if (maxWorkoutId == null)
@@ -133,5 +136,9 @@ public class GymService {
     public void addRecordInHistory(WorkOutHistory work) {
         work.setUserId(getCurrentUserId());
         workHist.save(work);
+    }
+
+    public List<Gymplan> getGymPlansOfUser() {
+        return gymRepo.getGymPlansOfUser(getCurrentUserId());
     }
 }

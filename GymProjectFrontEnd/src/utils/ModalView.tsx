@@ -37,8 +37,9 @@ export const NestedModal = () => {
   const userName = localStorage.getItem("username");
 
 
-  function addNewPlan(){
-    fetch("http://localhost:8080/api/gym/addnewplan",
+  async function addNewPlan(){
+    const tryAddingNewPlan= async()=>{
+      const result = await fetch("http://localhost:8080/api/gym/addnewplan",
     {
       method: 'POST',
       headers: {
@@ -56,14 +57,25 @@ export const NestedModal = () => {
         "exercise4": newPlan?.exercise4+'$0',
         "exercise5": newPlan?.exercise5+'$0'
       })
-    }).then((result) => {
-      console.log("data pushed  "+result);
-    }).catch((err) => {
-      console.error(err);
     });
+    
+      
+   
+      if(!result.ok){
+        const data= await result.json()
+        alert(data.message)
+        throw new Error("reached limit")
+      }
+      console.log("data pushed  "+result);
+     
 
     // this line redirect to home page
     window.location.href = "http://localhost:3000/workout";
+    }
+    
+    tryAddingNewPlan().catch((error: any) => {
+      console.log(error)
+    })
 
   }
 

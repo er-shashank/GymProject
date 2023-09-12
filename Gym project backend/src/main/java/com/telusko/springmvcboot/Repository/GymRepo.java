@@ -10,11 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.telusko.springmvcboot.model.Gymplan;
 
+import java.util.List;
+
 
 public interface GymRepo extends JpaRepository<Gymplan, GymPlanPrimaryKey>, CrudRepository<Gymplan, GymPlanPrimaryKey> {
 
-	@Query("select g.gymPlanPrimaryKey.userId,body_part,exercise1,exercise2,exercise3,exercise4,exercise5 from Gymplan g where g.gymPlanPrimaryKey.userId= :userId")
-	String find (@Param("userId") Long userId);
+	@Query(value = "select g.user_id, g.exercise_id ,body_part,exercise1,exercise2,exercise3,exercise4,exercise5 " +
+			"from Gymplan g where g.user_Id= :userId", nativeQuery = true)
+	List<Gymplan>  getGymPlansOfUser (@Param("userId") Long userId);
 	
 	@Query("select count(1) from Gymplan g where g.gymPlanPrimaryKey.userId= :userId")
 	int totalWorkOutAvailable (@Param("userId")Long userId);
@@ -36,4 +39,5 @@ public interface GymRepo extends JpaRepository<Gymplan, GymPlanPrimaryKey>, Crud
 
 	@Query("select max(g.gymPlanPrimaryKey.exerciseId) from Gymplan g where g.gymPlanPrimaryKey.userId= :userId")
 	String maxWorkoutId(@Param("userId") Long userId);
+
 }

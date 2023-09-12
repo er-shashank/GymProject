@@ -4,8 +4,8 @@ public enum ErrorMessages {
     UserExist("User Already "),
     NoUserLoggedIn("No User is Logged In!!!"),
 
-    NoGymPlan("You have not created any plan yet!!")
-    ;
+    NoGymPlan("You have not created any plan yet!!"),
+    ReachedLimit("User has Reached the Limit!");
 
     private final String errorMsg;
     ErrorMessages(String errorMsg){

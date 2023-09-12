@@ -1,5 +1,7 @@
 package com.telusko.springmvcboot.Repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,7 +18,11 @@ public interface WorkOutHistoryRepo extends JpaRepository<WorkOutHistory, Intege
 			"and userId= :userId")
 	String findLastExerciseDone (@Param("userId") Long userId);
 
-	@Query("select id,body_part,date,exercise1,exercise2,exercise3,exercise4,exercise5,userId,exerciseId" +
-			"  from WorkOutHistory where userId= :userId order by date DESC")
+	@Query(value="select id,body_part,date,exercise1,exercise2,exercise3,exercise4,exercise5,user_id,exercise_id" +
+			"  from WorkOutHistory where user_id= :userId order by date DESC", nativeQuery = true)
 	List<WorkOutHistory> findAllByUserId(@Param("userId") Long userId);
+
+	@Query(value="select id,body_part,date,exercise1,exercise2,exercise3,exercise4,exercise5,user_id,exercise_id" +
+			"  from WorkOutHistory where user_id= :userId order by date DESC limit :offs, :pageSize ",  nativeQuery = true)
+	List<WorkOutHistory> findHistWithPagination( @Param("offs") int offs,@Param("pageSize") int pageSize, @Param("userId") Long userId);
 }

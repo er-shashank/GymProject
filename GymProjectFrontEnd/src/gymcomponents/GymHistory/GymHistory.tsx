@@ -13,7 +13,7 @@ export const GymHistoryTable = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
     const [currentPage, setcurrentPage] = useState(1);
-    const [bookPerPage] = useState(5);
+    const [recordPerPage] = useState(5);
     const [totalAmountofBooks, setTotalAmountofBooks] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const authToken = localStorage.getItem("authenticationToken");
@@ -24,7 +24,7 @@ export const GymHistoryTable = () => {
         const fetchBooks = async () => {
             const baseUrl: string = "http://localhost:8080/api/gym/gymhistory";
 
-            let url: string = `${baseUrl}/${currentPage - 1}/${bookPerPage}`;
+            let url: string = `${baseUrl}/${currentPage - 1}/${recordPerPage}`;
 
             const response = await fetch(url, {
                 method: 'GET',
@@ -40,10 +40,8 @@ export const GymHistoryTable = () => {
 
             const responseJson = await response.json();
 
-            const responseData = responseJson;
-
             setTotalAmountofBooks(responseJson.total);
-            setTotalPages(Math.trunc(responseJson.total / bookPerPage) + (responseJson.total % bookPerPage > 0 ? 1 : 0));
+            setTotalPages(Math.trunc(responseJson.total / recordPerPage) + (responseJson.total % recordPerPage > 0 ? 1 : 0));
 
             const LoadedGymHistory: GymHistory[] = [];
 
@@ -85,9 +83,9 @@ export const GymHistoryTable = () => {
         )
     }
 
-    const indexofLastBook: number = currentPage * bookPerPage;
-    const indexofFirstBook: number = indexofLastBook - (bookPerPage);
-    let lastItem = bookPerPage * currentPage <= totalAmountofBooks ? bookPerPage * currentPage : totalAmountofBooks;
+    const indexofLastBook: number = currentPage * recordPerPage;
+    const indexofFirstBook: number = indexofLastBook - (recordPerPage);
+    let lastItem = recordPerPage * currentPage <= totalAmountofBooks ? recordPerPage * currentPage : totalAmountofBooks;
 
     const paginate = (pageNumber: number) =>
         setcurrentPage(pageNumber);

@@ -6,6 +6,8 @@ import { LogoutFunction } from '../utils/UtilityFunctions/LogoutFunction';
 import { checkIsUserLoggedIn } from '../utils/UtilityFunctions/checkIsUserLoggedIn';
 import { noOfWorkoutPlans } from '../utils/UtilityFunctions/noOfWorkoutPlans';
 import { NestedModal } from '../utils/ModalView';
+import CustomizedTables from '../models/GymplansTable';
+import GymplanTable from '../models/GymplansTable';
 
 
 
@@ -77,7 +79,15 @@ function HomePage() {
 
       
       {/* Additional content */}
+      
+
+     <GymplanTable></GymplanTable>
     </div>
+
+
+
+
+      
   );
 }
 

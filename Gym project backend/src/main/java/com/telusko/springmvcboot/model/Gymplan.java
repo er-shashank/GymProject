@@ -36,7 +36,7 @@ public class Gymplan
 
 
 	public Gymplan(GymPlanPrimaryKey gymPlanPrimaryKey, String body_part, String exercise1, String exercise2, String exercise3, String exercise4,
-				   String exercise5, String username) {
+				   String exercise5) {
 		super();
 		this.gymPlanPrimaryKey = gymPlanPrimaryKey;
 		this.body_part = body_part;

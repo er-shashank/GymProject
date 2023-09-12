@@ -6,6 +6,7 @@ import com.telusko.springmvcboot.security.exception.ErrorMessages;
 import com.telusko.springmvcboot.security.exception.GymException;
 import com.telusko.springmvcboot.security.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,6 +35,9 @@ public class GymController {
     @Autowired
     AuthService authService;
 
+    @Value("${user.maxplans}")
+    private Integer maxPlanLimit;
+
 
     /*
     * tested and working
@@ -54,6 +58,13 @@ public class GymController {
     public int getGymPlans() {
         int numberOfPlans = gymService.totalNumberOfPlans();
         return numberOfPlans;
+    }
+
+
+    @GetMapping("/user/gymPlans")
+    public List<Gymplan> getGymPlansOfUser() {
+        List<Gymplan> gymplans = gymService.getGymPlansOfUser();
+        return gymplans;
     }
 
     @GetMapping("test")
@@ -79,20 +90,11 @@ public class GymController {
 
 
     /*
-    * under test
+    * done and test
     * */
     @GetMapping("nextwork")
     public int nextWorkout() {
-
-
-        // String lastWorkOutstring = workHist.findLastExerciseDone();
-
-        // Integer lastWorkOut = Integer.parseInt((lastWorkOutstring == null) ? "2" : lastWorkOutstring);
-        // int totalWorkOutAvailable = repo.totalWorkOutAvailable();
-
-        // return (lastWorkOut + 1) % totalWorkOutAvailable;
         return gymService.nextWorkout();
-
     }
 
     @PostMapping("gymhistory")
@@ -113,9 +115,14 @@ public class GymController {
     * test completed
     * */
     @PostMapping("addnewplan")
-    public void addNewplan(@RequestBody Gymplan plan) {
+    public ResponseEntity addNewplan(@RequestBody Gymplan plan) {
 
+        Integer totalPlans= gymService.totalNumberOfPlans();
+        if(totalPlans>=maxPlanLimit) {
+            return new ResponseEntity(new GymException(ErrorMessages.ReachedLimit),HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+        }
         gymService.addNewplan(plan);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 
