@@ -1,7 +1,10 @@
 if a username already exist dont allow duplicate [done]
------------------------------------------------------------------------------------
 create user base
-user can have max 10 plans
+user can have max x no of plans
+-----------------------------------------------------------------------------------
+
+logger in spring boot
+page not refreshes after submitting a workout
 customizing plan on the fly
 note for future
 visualization for weight tracking

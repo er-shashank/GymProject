@@ -125,6 +125,12 @@ public class GymController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @DeleteMapping("remove/{exercise_id}")
+    public ResponseEntity removePlan(@PathVariable int exercise_id) {
+        boolean result= gymService.removePlan(exercise_id);
+        return new ResponseEntity(result ? HttpStatus.OK: HttpStatus.NOT_FOUND);
+    }
+
 
     //will be deprecated so dont use it
     @DeleteMapping("removenewplans")

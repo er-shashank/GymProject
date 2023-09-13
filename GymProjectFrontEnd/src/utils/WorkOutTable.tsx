@@ -7,31 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
-import GymPlan from '../models/GymPlan';
 
-function createData(
-    name: string,
-    Exercise1: string,
-    Exercise2: string,
-    Exercise3: string,
-    Exercise4: string,
-    Exercise5: string,
-    Submission: string
-) {
-    return {
-        name,
-        Exercise1,
-        Exercise2,
-        Exercise3,
-        Exercise4,
-        Exercise5,
-        Submission
-    };
-}
-
-const rows = [
-    createData('Frozen yoghurt', '159', '6.0', '24', '4.0', '1', '1')
-];
 
 export const WorkOutTable = (prop: any) => {
 

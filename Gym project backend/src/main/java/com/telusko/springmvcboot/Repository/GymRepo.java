@@ -16,7 +16,7 @@ import java.util.List;
 public interface GymRepo extends JpaRepository<Gymplan, GymPlanPrimaryKey>, CrudRepository<Gymplan, GymPlanPrimaryKey> {
 
 	@Query(value = "select g.user_id, g.exercise_id ,body_part,exercise1,exercise2,exercise3,exercise4,exercise5 " +
-			"from Gymplan g where g.user_Id= :userId", nativeQuery = true)
+			"from Gymplan g where g.user_Id= :userId order by g.exercise_id", nativeQuery = true)
 	List<Gymplan>  getGymPlansOfUser (@Param("userId") Long userId);
 	
 	@Query("select count(1) from Gymplan g where g.gymPlanPrimaryKey.userId= :userId")
@@ -39,5 +39,18 @@ public interface GymRepo extends JpaRepository<Gymplan, GymPlanPrimaryKey>, Crud
 
 	@Query("select max(g.gymPlanPrimaryKey.exerciseId) from Gymplan g where g.gymPlanPrimaryKey.userId= :userId")
 	String maxWorkoutId(@Param("userId") Long userId);
+
+	@Modifying
+	@Transactional
+	@Query("delete from Gymplan g where g.gymPlanPrimaryKey.userId = :uId and g.gymPlanPrimaryKey.exerciseId= :exId")
+	void deletePlan(int exId, Long uId);
+
+
+	@Modifying
+	@Transactional
+	@Query("update Gymplan g set g.gymPlanPrimaryKey.exerciseId= g.gymPlanPrimaryKey.exerciseId-1  " +
+			"where g.gymPlanPrimaryKey.userId= :currentUserId and g.gymPlanPrimaryKey.exerciseId> :exeId")
+	void bulkUpdateExerciseId(int exeId, Long currentUserId);
+
 
 }

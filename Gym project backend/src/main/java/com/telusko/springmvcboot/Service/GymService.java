@@ -141,4 +141,15 @@ public class GymService {
     public List<Gymplan> getGymPlansOfUser() {
         return gymRepo.getGymPlansOfUser(getCurrentUserId());
     }
+
+    public boolean removePlan(int exerciseId) {
+        try{
+            gymRepo.deletePlan(exerciseId, getCurrentUserId());
+            gymRepo.bulkUpdateExerciseId(exerciseId, getCurrentUserId());
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+       return true;
+    }
 }

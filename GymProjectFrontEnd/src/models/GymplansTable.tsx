@@ -111,6 +111,30 @@ export default function GymplanTable() {
   }, []);
 
 
+  async function handleClick(exerciseId: number | undefined) {
+
+    const baseUrl: string = "http://localhost:8080/api/gym/remove";
+    const url: string = `${baseUrl}/${exerciseId}`;
+
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'UserName': `${userName}`
+        },
+      });
+
+      if (!response.ok) {
+        const data= await response.json()
+        alert(data.message)
+        throw new Error('Something went wrong to fetch all gym plans data!');
+      }
+      else if (response.ok) {
+        alert("sucessfully deleted a plan!")
+      }
+
+  }
+
   return (
 
     <div>
@@ -126,11 +150,12 @@ export default function GymplanTable() {
                   <StyledTableCell align="right">exercise3</StyledTableCell>
                   <StyledTableCell align="right">exercise4</StyledTableCell>
                   <StyledTableCell align="right">exercise5</StyledTableCell>
+                  <StyledTableCell align="right">delete It?</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {gymPlan.map((row) => (
-                  <StyledTableRow key={row.body_part}>
+                  <StyledTableRow key={row.gymPlanPrimaryKey?.exerciseId}>
                     <StyledTableCell component="th" scope="row">
                       {row.body_part}
                     </StyledTableCell>
@@ -139,6 +164,11 @@ export default function GymplanTable() {
                     <StyledTableCell align="right">{row.exercise3}</StyledTableCell>
                     <StyledTableCell align="right">{row.exercise4}</StyledTableCell>
                     <StyledTableCell align="right">{row.exercise5}</StyledTableCell>
+                    <StyledTableCell align="right">
+                      <td>
+                        <button onClick={() => handleClick(row.gymPlanPrimaryKey?.exerciseId)}>Click here</button>
+                      </td>
+                    </StyledTableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>
