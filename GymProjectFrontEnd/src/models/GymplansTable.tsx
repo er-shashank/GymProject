@@ -34,36 +34,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 
-/**
- * 
- * [
-    {
-        "gymPlanPrimaryKey": {
-            "userId": 4,
-            "exerciseId": 0
-        },
-        "body_part": "anshu1",
-        "exercise1": "1$0",
-        "exercise2": "1$0",
-        "exercise3": "1$0",
-        "exercise4": "11$0",
-        "exercise5": "1$0"
-    }
-]
- * 
- */
-
-
-
-
-
-
-
 export default function GymplanTable() {
 
   const authToken = localStorage.getItem("authenticationToken");
   const userName = localStorage.getItem("username");
   const [gymPlan, setGymplan] = React.useState<GymPlan[]>([]);
+  const [planChanged, setPlanChanged] = React.useState(false);
 
   useEffect(() => {
     // Perform asynchronous operation, e.g., fetch data
@@ -108,10 +84,10 @@ export default function GymplanTable() {
       console.log(error)
     })
 
-  }, []);
+  }, [planChanged]);
 
 
-  async function handleClick(exerciseId: number | undefined) {
+  async function deletePlan(exerciseId: number | undefined) {
 
     const baseUrl: string = "http://localhost:8080/api/gym/remove";
     const url: string = `${baseUrl}/${exerciseId}`;
@@ -131,6 +107,7 @@ export default function GymplanTable() {
       }
       else if (response.ok) {
         alert("sucessfully deleted a plan!")
+        setPlanChanged(!planChanged)
       }
 
   }
@@ -166,7 +143,7 @@ export default function GymplanTable() {
                     <StyledTableCell align="right">{row.exercise5}</StyledTableCell>
                     <StyledTableCell align="right">
                       <td>
-                        <button onClick={() => handleClick(row.gymPlanPrimaryKey?.exerciseId)}>Click here</button>
+                        <button onClick={() => deletePlan(row.gymPlanPrimaryKey?.exerciseId)}>Click here</button>
                       </td>
                     </StyledTableCell>
                   </StyledTableRow>

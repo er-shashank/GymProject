@@ -19,6 +19,8 @@ export const WorkOutPage = () => {
     const [httpError, setHttpError] = useState(null);
     const [showHistory, setShowHistory] = useState(false);
     const [personalRecord, setPersonalRecord] = useState(['', '', '', '', '']);
+    const [planChanged, setPlanChanged] = useState(false);
+
     const authToken = localStorage.getItem("authenticationToken")
     const userName = localStorage.getItem("username");
 
@@ -86,6 +88,9 @@ export const WorkOutPage = () => {
                 console.error(err);
             });
 
+
+            setPlanChanged(!planChanged);
+
     }
 
 
@@ -142,7 +147,7 @@ export const WorkOutPage = () => {
             setLoading(false);
             setHttpError(error.message);
         })
-    }, [dayNo])
+    }, [dayNo, planChanged])
 
 
 
