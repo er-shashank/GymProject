@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.telusko.springmvcboot.model.primarykey.GymPlanPrimaryKey;
-import com.telusko.springmvcboot.security.dto.UserRepo;
+import com.telusko.springmvcboot.security.repository.UserRepo;
 import com.telusko.springmvcboot.security.exception.ErrorMessages;
 import com.telusko.springmvcboot.security.exception.GymException;
 import com.telusko.springmvcboot.security.service.AuthService;

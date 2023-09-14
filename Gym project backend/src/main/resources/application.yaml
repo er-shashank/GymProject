@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/shashank
+    username: root
+    password: 123456789
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+  mvc:
+    contentnegotiation:
+      defaultContentType: application/json
+logging:
+  level:
+    org:
+      springframework: INFO
+  file: app.log
+user:
+  maxplans: 6

@@ -1,4 +1,4 @@
-package com.telusko.springmvcboot.security.dto;
+package com.telusko.springmvcboot.security.repository;
 
 import com.telusko.springmvcboot.security.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
