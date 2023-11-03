@@ -1,10 +1,15 @@
 package com.telusko.springmvcboot.security.dto;
 
-//this class is used for transfering user info between client to server and vice varsa
+//this class is used for New user registration
 public class RegisterRequest {
     private String username;
     private String password;
     private String email;
+    private String otp;
+
+    public String getOtp() {
+        return otp;
+    }
 
     public String getUsername() {
         return username;

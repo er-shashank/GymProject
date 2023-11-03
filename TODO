@@ -2,7 +2,9 @@ if a username already exist dont allow duplicate [done]
 create user base
 user can have max x no of plans
 -----------------------------------------------------------------------------------
-
+singup should be otp based (thinking to use redis as server restart does not affect it)
+move credentials to env file or something else
+multithread the otp sending machanism
 logger in spring boot
 page not refreshes after submitting a workout
 customizing plan on the fly

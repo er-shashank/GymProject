@@ -2,7 +2,7 @@ package com.telusko.springmvcboot.controller;
 
 import java.util.List;
 
-import com.telusko.springmvcboot.security.exception.ErrorMessages;
+import com.telusko.springmvcboot.utilities.constants.ErrorMessages;
 import com.telusko.springmvcboot.security.exception.GymException;
 import com.telusko.springmvcboot.security.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
